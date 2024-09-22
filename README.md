@@ -1,5 +1,5 @@
 # DASSTN
-# Dual Aggregate Spectral-Spatial Transformer Network for Hyperspectral Image Classification
+# Dual Aggregate Spatial-Spectral Transformer Network for Hyperspectral Image Classification
 # Requirements
 python=3.8.17
 
