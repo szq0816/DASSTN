@@ -35,42 +35,6 @@ class SEBlock(nn.Module):
         return se_out * x
 
 
-class eca_layer(nn.Module):
-    """Constructs a ECA module.
-    Args:
-        channel: Number of channels of the input feature map
-        k_size: Adaptive selection of kernel size
-    """
-    def __init__(self, in_chans=200, embed_dim=64, k_size=3):
-        super(eca_layer, self).__init__()
-
-        self.conve = nn.Conv2d(in_chans, embed_dim, kernel_size=1, padding=0)
-        self.bne = nn.BatchNorm2d(embed_dim)
-        self.acte = nn.ReLU()
-
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        self.conv = nn.Conv1d(1, 1, kernel_size=k_size, padding=(k_size - 1) // 2, bias=False)
-        self.sigmoid = nn.Sigmoid()
-
-    def forward(self, x):
-
-        b, c, h, w = x.shape
-        x = self.conve(x)
-        x = self.bne(x)
-        x = self.acte(x)
-
-        # feature descriptor on the global spatial information
-        y = self.avg_pool(x)
-
-        # Two different branches of ECA module
-        y = self.conv(y.squeeze(-1).transpose(-1, -2)).transpose(-1, -2).unsqueeze(-1)
-
-        # Multi-scale information fusion
-        y = self.sigmoid(y)
-
-        return y * x
-
-
 class PatchEmbed(nn.Module):
     def __init__(self, patch_size=11, stride=11, padding=0, in_chans=200, embed_dim=64, norm_layer=None):
         super().__init__()
