@@ -7,7 +7,7 @@ numpy=1.21.0
 
 pytorch=1.12.0+cu116
 # Model
-Learning Rate: 0.005
+Learning Rate: 0.001
 
 Epoch: 100
 
